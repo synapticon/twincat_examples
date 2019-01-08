@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+  <POU Name="MAIN" Id="{6e890035-cf79-4130-96a8-f7c09ccea42f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	timer : FB_TIMER();
+	trigger : BOOL;
+	busy: BOOL;
+	errorID_sdo: UDINT;
+	sdo_ret_value : UDINT;
+	
+	check_for_error : BOOL := FALSE;
+	reset_drive: BOOL;
+	fbSdoRead       : FB_EcCoESdoRead;
+	error : BOOL;
+	
+	state : UINT := 0;
+	
+	bStatusEnable : BOOL;
+		// =============== Axis reference =========================
+	AxisRef			: AXIS_REF;				// Axis reference (process data plc/nc)
+	
+	// =============== Motion function blocks =================
+	fbMcPower 		: MC_Power;				// FB for enable and override
+	fbMcReset 		: MC_Reset;				// FB to reset axis
+	
+	// Signal generator
+	fbSignalGenerator : FB_CTRL_SIGNAL_GENERATOR;
+	fManValue : REAL := 0;
+	eMode : E_CTRL_MODE := eCTRL_MODE_ACTIVE;
+	stParams : ST_CTRL_SIGNAL_GENERATOR_PARAMS;
+	fOut : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE state OF
+	0:
+		// Init state
+		fbMCPower(	Enable 			:= TRUE, 
+			Enable_Positive	:= TRUE, 
+			Enable_Negative	:= TRUE, 
+			Override		:= 100.0,
+			Axis			:= AxisRef,
+			Status			=> bStatusEnable);
+			
+		stParams.eSignalType := eCTRL_SINUS;
+		stParams.fAmplitude := GVL.TARGET_AMPLITUDE_VELOCITY;
+		stParams.fOffset := GVL.AMPLITUDE_OFFSET;
+		stParams.tStart := T#0S;
+		stParams.tCtrlCycleTime := T#1MS;
+		stParams.tTaskCycleTime := T#1MS;
+		stParams.tCylceDuration := GVL.SINUS_FREQUENCY; 
+		state := 1;
+	
+	1:
+		// Execute state
+		// Signal generator for velocity. 
+		fbSignalGenerator(fManValue := fManValue, eMode := eMode, fOut => fOut, stParams := stParams);
+		GVL.velocity_out := LREAL_TO_DINT(fOut);
+		IF eMode = eCTRL_MODE_RESET THEN
+			eMode := eCTRL_MODE_ACTIVE;
+		END_IF
+	
+		// Timer for error checking
+		timer(trigger => trigger);
+		
+		IF trigger THEN
+			check_for_error := TRUE;
+		END_IF
+		
+		IF check_for_error THEN
+			// Read SDO Error Object
+			fbSDORead(sNetId := GVL.NET_ID_CABINET,
+					nSlaveAddr := GVL.SLAVE_ADDR, 
+					nIndex := GVL.OBJ_DIR_ERROR, 
+					nSubIndex := 0, 
+					pDstBuf := ADR(sdo_ret_value), 
+					cbBuflen := SIZEOF(sdo_ret_value), 
+					bExecute := TRUE, 
+					bError => error, 
+					nErrId => errorID_sdo, 
+					bBusy => busy);
+			// If error value unequal zero, reset drive.		
+			IF sdo_ret_value <> 0 THEN
+				reset_drive := TRUE;
+				// Reset signal generator
+				eMode := eCTRL_MODE_RESET;					
+			END_IF
+				// Finish SDO Reading
+				fbSDORead(sNetId := GVL.NET_ID_CABINET,
+					nSlaveAddr := GVL.SLAVE_ADDR, 
+					nIndex := GVL.OBJ_DIR_ERROR, 
+					nSubIndex := 0, 
+					pDstBuf := ADR(sdo_ret_value), 
+					cbBuflen := SIZEOF(sdo_ret_value), 
+					bExecute := FALSE, 
+					bError => error, 
+					nErrId => errorID_sdo, 
+					bBusy => busy);
+			check_for_error := FALSE;
+		END_IF
+		
+		// Call reset functions
+		// Reset Drive
+		F_DRIVE_RESET(reset_drive);
+		// Reset NC Task
+		fbMcReset(Execute := reset_drive, Axis := AxisRef);
+		reset_drive := FALSE;
+END_CASE
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="155" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="159" Count="4" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="250" Count="5" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="172" Count="2" />
+      <LineId Id="271" Count="1" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="267" Count="2" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="176" Count="6" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="198" Count="9" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="208" Count="1" />
+      <LineId Id="256" Count="1" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="211" Count="12" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

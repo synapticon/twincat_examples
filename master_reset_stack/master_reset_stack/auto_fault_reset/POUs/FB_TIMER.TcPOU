@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+  <POU Name="FB_TIMER" Id="{f865bedf-095a-46d2-b14e-a10d8845fac8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TIMER
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	trigger: BOOL := FALSE;
+END_VAR
+
+VAR
+	state_timer			: UINT := 0;
+	t1 : TON();
+	t2 : TON();
+END_VAR
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE state_timer OF
+	0:
+		t1.PT := GVL.RESET_HOLD_TIME; // Low
+		t2.PT := GVL.RESET_SIGNAL; // High - Reset signal
+		//t1.IN := TRUE;
+		state_timer := 1;
+	1:
+		t1();
+		t2();
+		t2.IN := NOT t1.Q;
+		t1.IN := t2.Q;
+		trigger := t2.Q;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TIMER">
+      <LineId Id="10" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

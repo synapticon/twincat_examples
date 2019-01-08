@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+  <GVL Name="GVL" Id="{99f84099-7a89-4751-976f-dd68e9193fbb}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	TARGET_AMPLITUDE_VELOCITY : DINT := 1000;
+	SINUS_FREQUENCY : TIME := T#300MS; // Milliseconds
+	AMPLITUDE_OFFSET : REAL := 0.0;
+
+	RESET_HOLD_TIME : TIME := T#2S;
+	RESET_SIGNAL : TIME := T#10S;
+
+
+
+	controlword_PLC_SLAVE AT %Q*: UINT;
+	controlword_PLC_NC AT %I*: UINT;
+	tuning_cmd AT %Q*: UDINT;
+	velocity_out AT %Q*: DINT;
+	opmode AT %Q*: SINT := 9;
+	
+	NET_ID_CABINET : T_AmsNetID := '192.168.101.251.3.1';
+	SLAVE_ADDR : UINT := 1001;
+	OBJ_DIR_ERROR			: WORD := 16#603F;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
