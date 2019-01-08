@@ -33,7 +33,18 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[(*
+Change in GVL (GVLs->GVL): 
+	TARGET_AMPLITUDE_VELOCITY : DINT := 1000;
+	SINUS_FREQUENCY : TIME := T#300MS; // Milliseconds
+	AMPLITUDE_OFFSET : REAL := 0.0;
+
+	RESET_HOLD_TIME : TIME := T#2S;
+	RESET_SIGNAL : TIME := T#10S;
+*)
+
+
+
 CASE state OF
 	0:
 		// Init state
@@ -116,6 +127,11 @@ END_CASE
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="307" Count="0" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="314" Count="5" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="308" Count="1" />
       <LineId Id="155" Count="0" />
       <LineId Id="153" Count="0" />
       <LineId Id="156" Count="0" />

@@ -8,8 +8,8 @@ VAR_GLOBAL
 	SINUS_FREQUENCY : TIME := T#300MS; // Milliseconds
 	AMPLITUDE_OFFSET : REAL := 0.0;
 
-	RESET_HOLD_TIME : TIME := T#2S;
-	RESET_SIGNAL : TIME := T#10S;
+	RESET_HOLD_TIME : TIME := T#2S; // Reset time
+	RESET_SIGNAL : TIME := T#10S; // Cycle time (Checks after n seconds for errors)
 
 
 
