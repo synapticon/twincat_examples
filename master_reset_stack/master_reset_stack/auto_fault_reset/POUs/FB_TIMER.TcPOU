@@ -24,6 +24,7 @@ END_VAR
 		//t1.IN := TRUE;
 		state_timer := 1;
 	1:
+		t2.PT := GVL.RESET_SIGNAL; // High - Reset signal
 		t1();
 		t2();
 		t2.IN := NOT t1.Q;
@@ -32,7 +33,9 @@ END_VAR
 END_CASE]]></ST>
     </Implementation>
     <LineIds Name="FB_TIMER">
-      <LineId Id="10" Count="11" />
+      <LineId Id="10" Count="6" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="17" Count="4" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

@@ -56,7 +56,7 @@ CASE state OF
 			Status			=> bStatusEnable);
 			
 		stParams.eSignalType := eCTRL_SINUS;
-		stParams.fAmplitude := GVL.TARGET_AMPLITUDE_VELOCITY;
+		stParams.fAmplitude := GVL.TARGET_AMPLITUDE;
 		stParams.fOffset := GVL.AMPLITUDE_OFFSET;
 		stParams.tStart := T#0S;
 		stParams.tCtrlCycleTime := T#1MS;
@@ -67,8 +67,10 @@ CASE state OF
 	1:
 		// Execute state
 		// Signal generator for velocity. 
+		stParams.fAmplitude := GVL.TARGET_AMPLITUDE;
 		fbSignalGenerator(fManValue := fManValue, eMode := eMode, fOut => fOut, stParams := stParams);
 		GVL.velocity_out := LREAL_TO_DINT(fOut);
+		GVL.torque_out := LREAL_TO_INT(fOut);
 		IF eMode = eCTRL_MODE_RESET THEN
 			eMode := eCTRL_MODE_ACTIVE;
 		END_IF
@@ -81,6 +83,7 @@ CASE state OF
 		END_IF
 		
 		IF check_for_error THEN
+			
 			// Read SDO Error Object
 			fbSDORead(sNetId := GVL.NET_ID_CABINET,
 					nSlaveAddr := GVL.SLAVE_ADDR, 
@@ -143,12 +146,15 @@ END_CASE
       <LineId Id="249" Count="0" />
       <LineId Id="172" Count="2" />
       <LineId Id="271" Count="1" />
+      <LineId Id="351" Count="0" />
       <LineId Id="230" Count="0" />
       <LineId Id="243" Count="0" />
+      <LineId Id="350" Count="0" />
       <LineId Id="267" Count="2" />
       <LineId Id="229" Count="0" />
       <LineId Id="273" Count="0" />
       <LineId Id="176" Count="6" />
+      <LineId Id="352" Count="0" />
       <LineId Id="258" Count="0" />
       <LineId Id="198" Count="9" />
       <LineId Id="259" Count="0" />

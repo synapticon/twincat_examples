@@ -1647,6 +1647,10 @@ External Setpoint Generation:
 							<Type>DINT</Type>
 						</Var>
 						<Var>
+							<Name>GVL.torque_out</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
 							<Name>GVL.opmode</Name>
 							<Type>SINT</Type>
 						</Var>
@@ -1834,6 +1838,7 @@ External Setpoint Generation:
 			<OwnerB Name="TIID^Device 2 (EtherCAT)^Drive 1 (CiA402 Motor Control Device)">
 				<Link VarA="PlcTask Outputs^GVL.controlword_PLC_SLAVE" VarB="Outputs^Controlword"/>
 				<Link VarA="PlcTask Outputs^GVL.opmode" VarB="Outputs^Op Mode"/>
+				<Link VarA="PlcTask Outputs^GVL.torque_out" VarB="Outputs^Target Torque"/>
 				<Link VarA="PlcTask Outputs^GVL.tuning_cmd" VarB="Outputs^Tuning command"/>
 				<Link VarA="PlcTask Outputs^GVL.velocity_out" VarB="Outputs^Target Velocity"/>
 			</OwnerB>
