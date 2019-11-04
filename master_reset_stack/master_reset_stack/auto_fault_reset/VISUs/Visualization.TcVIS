@@ -96,11 +96,11 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">138</v>
+                      <v n="Value">59</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">212</v>
+                      <v n="Value">125</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
@@ -275,11 +275,11 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">378</v>
+                      <v n="Value">281</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">207</v>
+                      <v n="Value">125</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
@@ -397,11 +397,11 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">129</v>
+                      <v n="Value">50</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">166</v>
+                      <v n="Value">87</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
@@ -519,19 +519,19 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">336</v>
+                      <v n="Value">241</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">173</v>
+                      <v n="Value">89</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
-                      <v n="Value">240</v>
+                      <v n="Value">238</v>
                     </o>
                     <o>
                       <v n="Id">2134141914L</v>
-                      <v n="Value">30</v>
+                      <v n="Value">32</v>
                     </o>
                     <o>
                       <v n="Id">390574330L</v>
@@ -685,11 +685,11 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">133</v>
+                      <v n="Value">566</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">383</v>
+                      <v n="Value">125</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
@@ -811,11 +811,11 @@
                     </o>
                     <o>
                       <v n="Id">1649127785L</v>
-                      <v n="Value">79</v>
+                      <v n="Value">516</v>
                     </o>
                     <o>
                       <v n="Id">357335551L</v>
-                      <v n="Value">338</v>
+                      <v n="Value">90</v>
                     </o>
                     <o>
                       <v n="Id">2422045748L</v>
@@ -905,8 +905,6 @@
                 <v>a86cbb21-24a1-4e9e-ad12-572ba3fb0c5a</v>
                 <v>ContainsPoint</v>
                 <v>8ef6cc95-2caf-465a-94fb-1182f9868d48</v>
-                <v>FB_Reinit</v>
-                <v>f5e0b1fc-b8fb-4a4f-ae63-330091f775ec</v>
                 <v>HasInputAccess</v>
                 <v>6763efd0-453c-43bd-bb9b-1a23c1648220</v>
                 <v>HasInputAccessIntern</v>
@@ -945,6 +943,8 @@
                 <v>a00afab0-c34e-496d-a367-8b84db06afa5</v>
                 <v>Initialize</v>
                 <v>cf9fbcec-4c66-49da-82b9-ea05cc45c557</v>
+                <v>Destruct</v>
+                <v>d36e2598-d52c-4893-8ee6-1619d2f0b451</v>
                 <v>SetStaticState</v>
                 <v>24654bce-bec2-4cc7-94a3-1057c16da75d</v>
                 <v>GetSurroundingRect</v>
@@ -959,8 +959,8 @@
                 <v>def80905-6d99-44ee-a0dd-bf2c7868ed2e</v>
                 <v>SetDialogInterface</v>
                 <v>b6d6477d-1dd1-4f29-85a0-5eb0c0dee6ae</v>
-                <v>Destruct</v>
-                <v>d36e2598-d52c-4893-8ee6-1619d2f0b451</v>
+                <v>FB_Reinit</v>
+                <v>f5e0b1fc-b8fb-4a4f-ae63-330091f775ec</v>
                 <v>FB_Exit</v>
                 <v>15e91c1d-65a6-4ddc-893c-031c304f5cbb</v>
                 <v>GetInitializeVersion</v>

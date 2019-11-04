@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="MAIN" Id="{6e890035-cf79-4130-96a8-f7c09ccea42f}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
@@ -7,7 +7,7 @@ VAR
 	trigger : BOOL;
 	busy: BOOL;
 	errorID_sdo: UDINT;
-	sdo_ret_value : UDINT;
+	sdo_ret_value : LINT;
 	
 	check_for_error : BOOL := FALSE;
 	reset_drive: BOOL;
@@ -55,6 +55,7 @@ CASE state OF
 			Axis			:= AxisRef,
 			Status			=> bStatusEnable);
 			
+		fbMcReset(Execute := TRUE, Axis := AxisRef);
 		stParams.eSignalType := eCTRL_SINUS;
 		stParams.fAmplitude := GVL.TARGET_AMPLITUDE;
 		stParams.fOffset := GVL.AMPLITUDE_OFFSET;
@@ -63,14 +64,19 @@ CASE state OF
 		stParams.tTaskCycleTime := T#1MS;
 		stParams.tCylceDuration := GVL.SINUS_FREQUENCY; 
 		state := 1;
-	
 	1:
+		fbMcReset(Execute := FALSE, Axis := AxisRef);
+		state := 2;
+	
+	2:
 		// Execute state
 		// Signal generator for velocity. 
-		stParams.fAmplitude := GVL.TARGET_AMPLITUDE;
-		fbSignalGenerator(fManValue := fManValue, eMode := eMode, fOut => fOut, stParams := stParams);
-		GVL.velocity_out := LREAL_TO_DINT(fOut);
-		GVL.torque_out := LREAL_TO_INT(fOut);
+		//stParams.fAmplitude := GVL.TARGET_AMPLITUDE;
+		//fbSignalGenerator(fManValue := fManValue, eMode := eMode, fOut => fOut, stParams := stParams);
+		//GVL.velocity_out := LREAL_TO_DINT(fOut);
+		//GVL.torque_out := LREAL_TO_INT(fOut);
+		//GVL.torque_out := 200;
+		GVL.torque_out := DINT_TO_INT(GVL.TARGET_AMPLITUDE);
 		IF eMode = eCTRL_MODE_RESET THEN
 			eMode := eCTRL_MODE_ACTIVE;
 		END_IF
@@ -84,11 +90,15 @@ CASE state OF
 		
 		IF check_for_error THEN
 			
+			IF GVL.velocity_in < 40 THEN
+				reset_drive := TRUE;
+			END_IF
+			
 			// Read SDO Error Object
 			fbSDORead(sNetId := GVL.NET_ID_CABINET,
 					nSlaveAddr := GVL.SLAVE_ADDR, 
 					nIndex := GVL.OBJ_DIR_ERROR, 
-					nSubIndex := 0, 
+					nSubIndex := 1, 
 					pDstBuf := ADR(sdo_ret_value), 
 					cbBuflen := SIZEOF(sdo_ret_value), 
 					bExecute := TRUE, 
@@ -96,7 +106,7 @@ CASE state OF
 					nErrId => errorID_sdo, 
 					bBusy => busy);
 			// If error value unequal zero, reset drive.		
-			IF sdo_ret_value <> 0 THEN
+			IF sdo_ret_value <> GVL.NO_ERROR THEN
 				reset_drive := TRUE;
 				// Reset signal generator
 				eMode := eCTRL_MODE_RESET;					
@@ -117,7 +127,7 @@ CASE state OF
 		
 		// Call reset functions
 		// Reset Drive
-		F_DRIVE_RESET(reset_drive);
+		//F_DRIVE_RESET(reset_drive);
 		// Reset NC Task
 		fbMcReset(Execute := reset_drive, Axis := AxisRef);
 		reset_drive := FALSE;
@@ -142,19 +152,26 @@ END_CASE
       <LineId Id="159" Count="4" />
       <LineId Id="158" Count="0" />
       <LineId Id="248" Count="0" />
+      <LineId Id="421" Count="0" />
       <LineId Id="250" Count="5" />
       <LineId Id="249" Count="0" />
-      <LineId Id="172" Count="2" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="422" Count="0" />
+      <LineId Id="424" Count="1" />
+      <LineId Id="173" Count="1" />
       <LineId Id="271" Count="1" />
       <LineId Id="351" Count="0" />
       <LineId Id="230" Count="0" />
       <LineId Id="243" Count="0" />
       <LineId Id="350" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="420" Count="0" />
       <LineId Id="267" Count="2" />
       <LineId Id="229" Count="0" />
       <LineId Id="273" Count="0" />
       <LineId Id="176" Count="6" />
       <LineId Id="352" Count="0" />
+      <LineId Id="385" Count="3" />
       <LineId Id="258" Count="0" />
       <LineId Id="198" Count="9" />
       <LineId Id="259" Count="0" />

@@ -1,34 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.16">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <GVL Name="GVL" Id="{99f84099-7a89-4751-976f-dd68e9193fbb}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
 	
-	OPMODE_CSP : SINT := 8;
+	//OPMODE_CSP : SINT := 8;
 	OPMODE_CSV : SINT := 9;
 	OPMODE_CST : SINT := 10;
 	
-	OPMODE_STRINGS : ARRAY [1..3] OF STRING := ['CSP', 'CSV', 'CST']; 
+	OPMODE_STRINGS : ARRAY [1..2] OF STRING := ['CSV', 'CST']; 
 	
 	TARGET_AMPLITUDE : DINT := 100;
 	SINUS_FREQUENCY : TIME := T#300MS; // Milliseconds
 	AMPLITUDE_OFFSET : REAL := 0.0;
 
+	
 	RESET_HOLD_TIME : TIME := T#2S; // Reset time
 	RESET_SIGNAL : TIME := T#10S; // Cycle time (Checks after n seconds for errors)
 
-	
-
-	controlword_PLC_SLAVE AT %Q*: UINT;
-	controlword_PLC_NC AT %I*: UINT;
-	tuning_cmd AT %Q*: UDINT;
+	velocity_in AT %I*:DINT;
 	velocity_out AT %Q*: DINT;
 	torque_out AT %Q*: INT;
 	opmode AT %Q*: SINT := OPMODE_CST;
 	
 	NET_ID_CABINET : T_AmsNetID := '192.168.101.251.3.1';
 	SLAVE_ADDR : UINT := 1001;
-	OBJ_DIR_ERROR			: WORD := 16#603F;
+	OBJ_DIR_ERROR			: WORD := 16#203F;
+	NO_ERROR : LINT := 16#20746C7561466F4E;
+	STR_NO_ERROR : STRING := LINT_TO_STRING(NO_ERROR);
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
